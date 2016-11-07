@@ -258,6 +258,16 @@ include_directories(${CURRENT_TARGET_INCLUDES})
 
 target_link_libraries(${CURRENT_TARGET} ${CURRENT_TARGET_LIBRARIES})
 
+target_compile_options(${CURRENT_TARGET} PUBLIC $<$<COMPILE_LANGUAGE:C>:-Wall -Wextra -Wno-unused-function -Wno-unused-parameter -Werror-implicit-function-declaration -Wno-missing-braces -Wno-missing-field-initializers -std=gnu99 -fno-strict-aliasing>)
+
+if(USE_LIBC++)
+    target_compile_options(${CURRENT_TARGET} PUBLIC $<$<COMPILE_LANGUAGE:CXX>:-Wall -Wextra -Wno-unused-function -Wno-unused-parameter -Werror-implicit-function-declaration -Wno-missing-field-initializers -fno-strict-aliasing -std=gnu++14 -stdlib=libc++>)
+else()
+    target_compile_options(${CURRENT_TARGET} PUBLIC $<$<COMPILE_LANGUAGE:CXX>:-Wall -Wextra -Wno-unused-function -Wno-unused-parameter -Werror-implicit-function-declaration -Wno-missing-field-initializers -fno-strict-aliasing -std=gnu++14>)
+endif()
+
+target_compile_options(${CURRENT_TARGET} PUBLIC $<$<CONFIG:DEBUG>:-g>)
+
 set_target_properties(${CURRENT_TARGET} PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set_target_properties(${CURRENT_TARGET} PROPERTIES BINARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set_target_properties(${CURRENT_TARGET} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})

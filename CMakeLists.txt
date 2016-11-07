@@ -26,17 +26,7 @@ if(${CMAKE_C_COMPILER_ID} MATCHES "Clang" OR ${CMAKE_CXX_COMPILER_ID} MATCHES "C
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANG)
-    if(CMAKE_BUILD_TYPE MATCHES DEBUG)
-        list(APPEND CMAKE_CXX_FLAGS "-g")
-    endif()
-
-    list(APPEND CMAKE_CXX_FLAGS "-Wall -Wextra -Wno-unused-function -Wno-unused-parameter -Werror-implicit-function-declaration -Wno-missing-field-initializers ${CMAKE_CXX_FLAGS} -fno-strict-aliasing -std=gnu++14")
-    list(APPEND CMAKE_C_FLAGS "-Wall -Wextra -Wno-unused-function -Wno-unused-parameter  -Werror-implicit-function-declaration -Wno-missing-braces -Wno-missing-field-initializers ${CMAKE_C_FLAGS} -std=gnu99 -fno-strict-aliasing")
-
     option(USE_LIBC++ "Use libc++ instead of libstdc++" ${APPLE})
-    if(USE_LIBC++)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
-    endif()
 endif()
 
 if(BUILD_UNIT_TESTS)
