@@ -57,25 +57,6 @@
 #  define ODB_NOTHROW_NOEXCEPT throw()
 #endif
 
-// Once we drop support for C++98, we can probably get rid of config.h except
-// for the autotools case by fixing ODB_THREADS_CXX11 (and perhaps supporting
-// the ODB_THREADS_NONE case via a "global" (command line) define).
-//
-#ifdef ODB_COMPILER
-#  define ODB_THREADS_NONE
-#  define LIBODB_STATIC_LIB
-#elif defined(LIBODB_BUILD2)
-#  if defined(_MSC_VER)
-#    include <odb/details/build2/config-vc.h>
-#  else
-#    include <odb/details/build2/config.h>
-#  endif
-#elif defined(_MSC_VER)
-#  include <odb/details/config-vc.h>
-#else
-#  include <odb/details/config.h>
-#endif
-
 // no post
 
 #endif // ODB_DETAILS_CONFIG_HXX
