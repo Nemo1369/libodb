@@ -30,54 +30,7 @@ namespace odb
     //
     template <typename T>
     inline void
-    tls_free (T&)
-    {
-    }
-
-    template <typename T>
-    inline T*
-    tls_get (T* p)
-    {
-      return p;
-    }
-
-    template <typename T, typename T1>
-    inline void
-    tls_set (T*& rp, T1* p)
-    {
-      rp = p;
-    }
-  }
-}
-
-#elif defined(ODB_THREADS_CXX11)
-
-// Apparently Apple's Clang "temporarily disabled" C++11 thread_local until
-// they can implement a "fast" version, which reportedly happened in XCode 8.
-// So for now we will continue using __thread for this target.
-//
-#  if defined(__apple_build_version__) && __apple_build_version__ < 8000000
-#    define ODB_TLS_POINTER(type) __thread type*
-#    define ODB_TLS_OBJECT(type) thread_local type
-#  else
-#    define ODB_TLS_POINTER(type) thread_local type*
-#    define ODB_TLS_OBJECT(type) thread_local type
-#  endif
-
-namespace odb
-{
-  namespace details
-  {
-    template <typename T>
-    inline T&
-    tls_get (T& x)
-    {
-      return x;
-    }
-
-    template <typename T>
-    inline void
-    tls_free (T&)
+    tls_free (T& x)
     {
     }
 

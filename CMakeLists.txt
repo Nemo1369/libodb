@@ -29,6 +29,9 @@ if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLAN
     option(USE_LIBC++ "Use libc++ instead of libstdc++" ${APPLE})
 endif()
 
+configure_file(${PROJECT_SOURCE_DIR}/odb/details/config.h.in
+    ${PROJECT_SOURCE_DIR}/odb/details/config.h)
+
 if(BUILD_UNIT_TESTS)
     enable_testing()
 endif()

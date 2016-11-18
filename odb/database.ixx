@@ -73,10 +73,7 @@ namespace odb
 
   inline database::
   database (database_id id)
-      : id_ (id),
-        tracer_ (0),
-        mutex_ (new details::mutex),
-        schema_version_seq_ (1)
+      : id_ (id), tracer_ (0), schema_version_seq_ (1)
   {
   }
 
@@ -574,7 +571,7 @@ namespace odb
   }
 
   template <typename T>
-  inline typename result<T>::pointer_type database::
+  inline typename object_traits<T>::pointer_type database::
   query_one ()
   {
     return query_one<T> (odb::query<T> ());
@@ -595,7 +592,7 @@ namespace odb
   }
 
   template <typename T>
-  inline typename result<T>::pointer_type database::
+  inline typename object_traits<T>::pointer_type database::
   query_one (const char* q)
   {
     return query_one<T> (odb::query<T> (q));
@@ -616,7 +613,7 @@ namespace odb
   }
 
   template <typename T>
-  inline typename result<T>::pointer_type database::
+  inline typename object_traits<T>::pointer_type database::
   query_one (const std::string& q)
   {
     return query_one<T> (odb::query<T> (q));
@@ -644,7 +641,7 @@ namespace odb
   }
 
   template <typename T>
-  inline typename result<T>::pointer_type database::
+  inline typename object_traits<T>::pointer_type database::
   query_one (const odb::query<T>& q)
   {
     return query_one_<T, id_common> (q);
@@ -687,6 +684,14 @@ namespace odb
     c.cache_query (pq);
   }
 
+  template <typename T, typename P>
+  inline void database::
+  cache_query (const prepared_query<T>& pq, std::auto_ptr<P> params)
+  {
+    connection_type& c (transaction::current ().connection ());
+    c.cache_query (pq, params);
+  }
+
 #ifdef ODB_CXX11
   template <typename T, typename P>
   inline void database::
@@ -694,14 +699,6 @@ namespace odb
   {
     connection_type& c (transaction::current ().connection ());
     c.cache_query (pq, std::move (params));
-  }
-#else
-  template <typename T, typename P>
-  inline void database::
-  cache_query (const prepared_query<T>& pq, std::auto_ptr<P> params)
-  {
-    connection_type& c (transaction::current ().connection ());
-    c.cache_query (pq, params);
   }
 #endif
 
@@ -826,7 +823,7 @@ namespace odb
   }
 
   template <typename T, database_id DB, typename Q>
-  inline typename result<T>::pointer_type database::
+  inline typename object_traits<T>::pointer_type database::
   query_one_ (const Q& q)
   {
     result<T> r (query_<T, DB>::call (*this, q));

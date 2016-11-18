@@ -8,10 +8,11 @@
 #include <odb/pre.hxx>
 
 #include <odb/forward.hxx> // schema_version
+#include <odb/details/export.hxx>
 
 namespace odb
 {
-  struct schema_version_migration
+  struct LIBODB_EXPORT schema_version_migration
   {
     schema_version_migration (schema_version v = 0, bool m = false)
       : version (v), migration (m) {}

@@ -8,6 +8,7 @@
 #include <odb/pre.hxx>
 
 #include <odb/details/config.hxx>
+#include <odb/details/export.hxx>
 
 #ifdef ODB_THREADS_NONE
 
@@ -15,7 +16,7 @@ namespace odb
 {
   namespace details
   {
-    class mutex
+    class LIBODB_EXPORT mutex
     {
     public:
       mutex () {}
@@ -32,15 +33,7 @@ namespace odb
     };
   }
 }
-#elif defined(ODB_THREADS_CXX11)
-#  include <mutex>
-namespace odb
-{
-  namespace details
-  {
-    using std::mutex;
-  }
-}
+
 #elif defined(ODB_THREADS_POSIX)
 #include <odb/details/posix/mutex.hxx>
 #elif defined(ODB_THREADS_WIN32)

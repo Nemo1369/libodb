@@ -7,25 +7,15 @@
 
 #include <odb/pre.hxx>
 
+#include <odb/details/export.hxx>
 #include <odb/details/mutex.hxx>
 
-#ifdef ODB_THREADS_CXX11
-#  include <mutex>
 namespace odb
 {
   namespace details
   {
-    using lock = std::unique_lock<mutex>;
-  }
-}
-#else
-namespace odb
-{
-  namespace details
-  {
-    class lock
+    struct LIBODB_EXPORT lock
     {
-    public:
       lock (mutex& m)
           : mutex_ (&m)
       {
@@ -53,7 +43,6 @@ namespace odb
     };
   }
 }
-#endif
 
 #include <odb/post.hxx>
 

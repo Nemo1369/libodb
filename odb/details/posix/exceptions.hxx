@@ -7,7 +7,6 @@
 
 #include <odb/pre.hxx>
 
-#include <odb/details/config.hxx> // ODB_NOTHROW_NOEXCEPT
 #include <odb/details/export.hxx>
 #include <odb/details/exception.hxx>
 
@@ -23,7 +22,7 @@ namespace odb
       code () const {return code_;}
 
       virtual const char*
-      what () const ODB_NOTHROW_NOEXCEPT;
+      what () const throw ();
 
       virtual posix_exception*
       clone () const;

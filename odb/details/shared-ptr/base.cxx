@@ -15,7 +15,7 @@ namespace odb
     share exclusive = share (2);
 
     const char* not_shared::
-    what () const ODB_NOTHROW_NOEXCEPT
+    what () const throw ()
     {
       return "object is not shared";
     }
@@ -54,11 +54,7 @@ namespace odb
 }
 
 void*
-#ifdef ODB_CXX11
-operator new (size_t n, odb::details::share s)
-#else
 operator new (size_t n, odb::details::share s) throw (std::bad_alloc)
-#endif
 {
   if (s == odb::details::shared)
   {
@@ -78,7 +74,7 @@ operator new (size_t n, odb::details::share s) throw (std::bad_alloc)
 }
 
 void
-operator delete (void* p, odb::details::share s) ODB_NOTHROW_NOEXCEPT
+operator delete (void* p, odb::details::share s) throw ()
 {
   // This version of operator delete is only called when the c-tor
   // fails. In this case there is no object and we can just free the

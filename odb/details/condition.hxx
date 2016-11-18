@@ -8,6 +8,7 @@
 #include <odb/pre.hxx>
 
 #include <odb/details/config.hxx>
+#include <odb/details/export.hxx>
 
 #ifdef ODB_THREADS_NONE
 
@@ -16,9 +17,7 @@ namespace odb
   namespace details
   {
     class mutex;
-    class lock;
-
-    class condition
+    class LIBODB_EXPORT condition
     {
     public:
       condition (mutex&) {}
@@ -27,31 +26,11 @@ namespace odb
       signal () {}
 
       void
-      wait (lock&) {}
+      wait () {}
 
     private:
       condition (const condition&);
       condition& operator= (const condition&);
-    };
-  }
-}
-
-#elif defined(ODB_THREADS_CXX11)
-#  include <condition_variable>
-#  include <odb/details/mutex.hxx>
-#  include <odb/details/lock.hxx>
-
-namespace odb
-{
-  namespace details
-  {
-    class condition: public std::condition_variable
-    {
-    public:
-      condition (mutex&) {}
-
-      void
-      signal () {notify_one ();}
     };
   }
 }

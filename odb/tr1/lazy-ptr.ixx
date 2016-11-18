@@ -501,13 +501,6 @@ namespace odb
     }
 
     template <class T>
-    inline lazy_shared_ptr<T> lazy_weak_ptr<T>::
-    lock () const
-    {
-      return lazy_shared_ptr<T> (p_.lock (), i_);
-    }
-
-    template <class T>
     inline std::tr1::shared_ptr<T> lazy_weak_ptr<T>::
     load () const
     {

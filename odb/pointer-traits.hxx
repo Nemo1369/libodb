@@ -161,7 +161,6 @@ namespace odb
 
   // Specialization for std::auto_ptr.
   //
-#ifndef ODB_CXX11
   template <typename T>
   class pointer_traits< std::auto_ptr<T> >
   {
@@ -231,22 +230,21 @@ namespace odb
       operator delete (p);
     }
   };
-#endif
 
 #ifdef ODB_CXX11
 
   // Specialization for C++11 std::unique_ptr.
   //
-  template <typename T, template <typename> class D>
-  class pointer_traits<std::unique_ptr<T, D<T>>>
+  template <typename T, typename D>
+  class pointer_traits<std::unique_ptr<T, D>>
   {
   public:
     static const pointer_kind kind = pk_unique;
     static const bool lazy = false;
 
     typedef T element_type;
-    typedef std::unique_ptr<T, D<T>> pointer_type;
-    typedef std::unique_ptr<const T, D<const T>> const_pointer_type;
+    typedef std::unique_ptr<element_type, D> pointer_type;
+    typedef std::unique_ptr<const element_type, D> const_pointer_type;
     typedef smart_ptr_guard<pointer_type> guard;
 
     static element_type*
@@ -273,16 +271,16 @@ namespace odb
     // Note: transfers ownership.
     //
     template <typename T1>
-    static std::unique_ptr<T1, D<T1>>
+    static std::unique_ptr<T1>
     static_pointer_cast (pointer_type& p)
     {
-      return std::unique_ptr<T1, D<T1>> (static_cast<T1*> (p.release ()));
+      return std::unique_ptr<T1> (static_cast<T1*> (p.release ()));
     }
 
     // Note: transfers ownership if successful.
     //
     template <typename T1>
-    static std::unique_ptr<T1, D<T1>>
+    static std::unique_ptr<T1>
     dynamic_pointer_cast (pointer_type& p)
     {
       T1* p1 (dynamic_cast<T1*> (p.get ()));
@@ -290,7 +288,7 @@ namespace odb
       if (p1 != 0)
         p.release ();
 
-      return std::unique_ptr<T1, D<T1>> (p1);
+      return std::unique_ptr<T1> (p1);
     }
 
   public:

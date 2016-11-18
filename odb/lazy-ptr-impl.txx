@@ -2,6 +2,8 @@
 // copyright : Copyright (c) 2009-2015 Code Synthesis Tools CC
 // license   : GNU GPL v2; see accompanying LICENSE file
 
+#include <odb/database.hxx>
+
 namespace odb
 {
   //
@@ -26,11 +28,7 @@ namespace odb
   typename object_traits<T>::pointer_type lazy_ptr_base::
   loader (database_type& db, const typename object_traits<T>::id_type& id)
   {
-    // Compiler error pointing here? Perhaps you did not include
-    // <odb/database.hxx>?
-    //
-    return static_cast<DB&> (db).template load<
-      typename object_traits<T>::object_type> (id);
+    return static_cast<DB&> (db).template load<T> (id);
   }
 
   //

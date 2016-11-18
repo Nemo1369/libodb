@@ -9,7 +9,7 @@ namespace odb
   namespace details
   {
     const char* posix_exception::
-    what () const ODB_NOTHROW_NOEXCEPT
+    what () const throw ()
     {
       return "POSIX API error";
     }

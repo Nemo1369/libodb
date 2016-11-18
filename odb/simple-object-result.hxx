@@ -167,16 +167,10 @@ namespace odb
     }
 
   public:
-    typedef typename object_traits<T>::pointer_type pointer_type;
-
-    pointer_type
+    typename object_traits<T>::pointer_type
     load ()
     {
-#ifdef ODB_CXX11
-      pointer_type r (std::move (res_->current ()));
-#else
-      pointer_type r (res_->current ());
-#endif
+      typename object_traits<T>::pointer_type r (res_->current ());
       res_->release ();
       return r;
     }

@@ -9,11 +9,13 @@
 
 #include <typeinfo>
 
+#include <odb/details/export.hxx>
+
 namespace odb
 {
   namespace details
   {
-    struct type_info_comparator
+    struct LIBODB_EXPORT type_info_comparator
     {
       bool
       operator() (const std::type_info* x, const std::type_info* y) const

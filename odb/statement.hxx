@@ -55,13 +55,12 @@ namespace odb
     // [; SELECT ...]
     //
     static void
-    process_insert (std::string& result,
-                    const char* statement,
-                    const void* const* bind,  // Array of bind buffer pointers.
-                    std::size_t bind_size,    // Number of bind elements.
-                    std::size_t bind_skip,    // Offset to the next bind.
-                    char param_symbol,        // $, ?, :, etc.
-                    char param_symbol2 = '\0');
+    process_insert (const char* statement,
+                    const void* const* bind, // Array of bind buffer pointers.
+                    std::size_t bind_size,   // Number of bind elements.
+                    std::size_t bind_skip,   // Offset to the next bind.
+                    char param_symbol,       // $, ?, :, etc.
+                    std::string& result);
 
     // Expected statement structure:
     //
@@ -73,33 +72,31 @@ namespace odb
     // [WHERE ...]
     //
     static void
-    process_update (std::string& result,
-                    const char* statement,
-                    const void* const* bind,  // Array of bind buffer pointers.
-                    std::size_t bind_size,    // Number of bind elements.
-                    std::size_t bind_skip,    // Offset to the next bind.
-                    char param_symbol,        // $, ?, :, etc.
-                    char param_symbol2 = '\0');
-
+    process_update (const char* statement,
+                    const void* const* bind, // Array of bind buffer pointers.
+                    std::size_t bind_size,   // Number of bind elements.
+                    std::size_t bind_skip,   // Offset to the next bind.
+                    char param_symbol,       // $, ?, :, etc.
+                    std::string& result);
 
     // Expected statement structure:
     //
     //  SELECT\n
-    //  [schema.]table.a [AS b],\n
+    //  [schema.]table.a,\n
     //  alias.b\n
     //  FROM [schema.]table[\n]
     // [{A-Z }* JOIN [schema.]table [AS alias][ ON ...][\n]]*
     // [WHERE ...]
     //
     static void
-    process_select (std::string& result,
-                    const char* statement,
+    process_select (const char* statement,
                     const void* const* bind, // Array of bind buffer pointers.
                     std::size_t bind_size,   // Number of bind elements.
                     std::size_t bind_skip,   // Offset to the next bind.
                     char quote_open,         // Identifier opening quote.
                     char quote_close,        // Identifier closing quote.
                     bool optimize,           // Remove unused JOINs.
+                    std::string& result,
                     bool as = true);         // JOINs use AS keyword.
   };
 }

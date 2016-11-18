@@ -7,9 +7,11 @@
 namespace odb
 {
   template <typename T>
-  typename result<T>::pointer_type result<T>::
+  typename object_traits<T>::pointer_type result<T>::
   one ()
   {
+    typedef typename object_traits<T>::pointer_type pointer_type;
+
     iterator i (begin ());
 
     if (i != end ())

@@ -32,7 +32,6 @@
 #include <odb/details/export.hxx>
 #include <odb/details/mutex.hxx>
 #include <odb/details/c-string.hxx>
-#include <odb/details/unique-ptr.hxx>
 #include <odb/details/function-wrapper.hxx>
 #include <odb/details/meta/answer.hxx>
 
@@ -45,29 +44,6 @@ namespace odb
   public:
     virtual
     ~database ();
-
-#ifdef ODB_CXX11
-    //database (database&&) = default; // VC 2013
-
-    database (database&& d)
-        : id_ (d.id_),
-          tracer_ (d.tracer_),
-          query_factory_map_ (std::move (d.query_factory_map_)),
-          mutex_ (std::move (d.mutex_)),
-          schema_version_map_ (std::move (d.schema_version_map_)),
-          schema_version_table_ (std::move (d.schema_version_table_)),
-          schema_version_seq_ (d.schema_version_seq_)
-    {
-    }
-#endif
-
-  private:
-    database (const database&);
-    database& operator= (const database&);
-
-#ifdef ODB_CXX11
-    database& operator= (const database&&);
-#endif
 
     // Object persistence API.
     //
@@ -301,7 +277,7 @@ namespace odb
     // Query one API.
     //
     template <typename T>
-    typename result<T>::pointer_type
+    typename object_traits<T>::pointer_type
     query_one ();
 
     template <typename T>
@@ -313,7 +289,7 @@ namespace odb
     query_value ();
 
     template <typename T>
-    typename result<T>::pointer_type
+    typename object_traits<T>::pointer_type
     query_one (const char*);
 
     template <typename T>
@@ -325,7 +301,7 @@ namespace odb
     query_value (const char*);
 
     template <typename T>
-    typename result<T>::pointer_type
+    typename object_traits<T>::pointer_type
     query_one (const std::string&);
 
     template <typename T>
@@ -337,7 +313,7 @@ namespace odb
     query_value (const std::string&);
 
     template <typename T>
-    typename result<T>::pointer_type
+    typename object_traits<T>::pointer_type
     query_one (const odb::query<T>&);
 
     template <typename T>
@@ -366,14 +342,14 @@ namespace odb
     void
     cache_query (const prepared_query<T>&);
 
+    template <typename T, typename P>
+    void
+    cache_query (const prepared_query<T>&, std::auto_ptr<P> params);
+
 #ifdef ODB_CXX11
     template <typename T, typename P>
     void
     cache_query (const prepared_query<T>&, std::unique_ptr<P> params);
-#else
-    template <typename T, typename P>
-    void
-    cache_query (const prepared_query<T>&, std::auto_ptr<P> params);
 #endif
 
     template <typename T>
@@ -528,6 +504,10 @@ namespace odb
   protected:
     database (database_id);
 
+  private:
+    database (const database&);
+    database& operator= (const database&);
+
   protected:
     virtual connection_type*
     connection_ () = 0;
@@ -614,7 +594,7 @@ namespace odb
     erase_object_ (I, I, bool);
 
     template <typename T, database_id DB, typename Q>
-    typename result<T>::pointer_type
+    typename object_traits<T>::pointer_type
     query_one_ (const Q&);
 
     template <typename T, database_id DB, typename Q>
@@ -641,7 +621,7 @@ namespace odb
     tracer_type* tracer_;
     query_factory_map query_factory_map_;
 
-    details::unique_ptr<details::mutex> mutex_; // Dynamic for move support.
+    mutable details::mutex mutex_;
     mutable schema_version_map schema_version_map_;
     std::string schema_version_table_;
     unsigned int schema_version_seq_;

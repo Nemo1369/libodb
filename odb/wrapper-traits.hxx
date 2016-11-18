@@ -77,7 +77,6 @@ namespace odb
 
   // Specialization for std::auto_ptr.
   //
-#ifndef ODB_CXX11
   template <typename T>
   class wrapper_traits< std::auto_ptr<T> >
   {
@@ -123,7 +122,6 @@ namespace odb
       return const_cast<unrestricted_wrapped_type&> (*p);
     }
   };
-#endif
 
 #ifdef ODB_CXX11
 

@@ -212,9 +212,7 @@ namespace odb
     // query_one() and query_value() implementation details.
     //
   public:
-    typedef typename iterator::pointer_type pointer_type;
-
-    pointer_type
+    typename object_traits<T>::pointer_type
     one ();
 
     bool

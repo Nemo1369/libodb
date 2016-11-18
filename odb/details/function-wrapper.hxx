@@ -65,10 +65,7 @@ namespace odb
       typedef void (function_wrapper<F>::*bool_convertible) ();
       void true_value () {}
 
-      operator bool_convertible () const
-      {
-        return function != 0 ? &function_wrapper<F>::true_value : 0;
-      }
+      operator bool_convertible () const;
 
     public:
       F* function;

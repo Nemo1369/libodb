@@ -37,7 +37,6 @@ namespace odb
   class statement;
   class session;
   class section;
-  template <typename T> class result;
 
   namespace common
   {
@@ -45,7 +44,6 @@ namespace odb
     using odb::schema_version_migration;
     using odb::session;
     using odb::section;
-    using odb::result;
   }
 
   namespace core
