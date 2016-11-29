@@ -17,7 +17,7 @@ endif()
 
 option(BUILD_UNIT_TESTS "Build unit tests" FALSE)
 option(BUILD_SHARED_LIBRARIES "Build shared library version" TRUE)
-set(APPLE_SIGN_IDENTITY "" CACHE STRING "Sign identity name")
+set(APPLE_CODE_SIGN_IDENTITY "" CACHE STRING "Sign identity name")
 
 set(CMAKE_OSX_ARCHITECTURES "$(ARCHS_STANDARD)" CACHE string "Build architecture")
 
